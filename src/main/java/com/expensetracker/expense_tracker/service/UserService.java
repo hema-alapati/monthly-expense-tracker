@@ -17,7 +17,12 @@ public class UserService {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
-
+    
+    public User getUserById(Long id){
+    	return userRepository.findById(id)
+    			.orElseThrow(()->new RuntimeException("User not found with id: "+id));
+    }
+    
     public User createUser(User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new RuntimeException("Email already exists.");
@@ -32,7 +37,7 @@ public class UserService {
 
 	    user.setName(updatedUser.getName());
 	    user.setEmail(updatedUser.getEmail());
-	    // set other fields as needed
+	    user.setPassword(updatedUser.getPassword());
 
 	    return userRepository.save(user);
 	}

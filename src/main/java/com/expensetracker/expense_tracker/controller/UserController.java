@@ -17,18 +17,27 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        User createdUser = userService.createUser(user);
+        return ResponseEntity.ok(createdUser);
     }
-    
+
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
-        return ResponseEntity.ok(userService.updateUser(id, updatedUser));
+        User user = userService.updateUser(id, updatedUser);
+        return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("/{id}")
@@ -36,6 +45,4 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.ok("User deleted successfully");
     }
-
-
 }
